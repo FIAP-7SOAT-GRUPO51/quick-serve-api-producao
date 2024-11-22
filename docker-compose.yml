@@ -1,0 +1,27 @@
+version: '3.8'
+services:
+
+  quick-serve-api-producao-db:
+    image: postgres:14
+    container_name: quick-serve-api-producao-db
+    environment:
+      POSTGRES_USER: ${QUICK_SERVE_API_PRODUCAO_POSTGRES_USER}
+      POSTGRES_PASSWORD: ${QUICK_SERVE_API_PRODUCAO_POSTGRES_PASSWORD}
+      POSTGRES_DB: postgres
+    volumes:
+      - ${QUICK_SERVE_API_PRODUCAO_POSTGRES_VOLUME_DATA}:/var/lib/postgresql/data
+      - ./docker-compose/postgres:/docker-entrypoint-initdb.d
+    ports:
+      - "${QUICK_SERVE_API_PRODUCAO_POSTGRES_PORT}:5432"
+    networks:
+      - network-quick-serve-api-producao
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+
+networks:
+
+  network-quick-serve-api-producao:
+    name: network-quick-serve-api-producao
+    driver: bridge
