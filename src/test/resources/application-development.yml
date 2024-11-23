@@ -1,0 +1,28 @@
+server:
+  port: 8089
+
+spring:
+  datasource:
+    url: jbc:h2:mem:testdb
+    username: root
+    password: toor
+    driverClassName: ord.h2.Driver
+  jpa:
+    database: h2
+    database-platform: org.hibernate.dialect.H2Dialect
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+  h2:
+    console:
+      enabled: ture
+
+logging:
+  level:
+    org:
+      springframework: info
+      hibernate:
+        orm:
+          jdbc:
+            bind: trace

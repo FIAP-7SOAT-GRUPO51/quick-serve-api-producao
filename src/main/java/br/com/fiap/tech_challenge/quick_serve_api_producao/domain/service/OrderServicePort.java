@@ -5,5 +5,5 @@ import br.com.fiap.tech_challenge.quick_serve_api_producao.domain.model.port.Ord
 public interface OrderServicePort {
 
     OrderPort save(OrderPort order);
-
+    OrderPort findByOrderId(Long orderId);
 }
