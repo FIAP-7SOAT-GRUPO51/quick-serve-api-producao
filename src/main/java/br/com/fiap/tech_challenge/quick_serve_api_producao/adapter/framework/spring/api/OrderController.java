@@ -25,7 +25,7 @@ public class OrderController implements OrderControllerOpenApi {
     @Autowired
     private OrderService orderService;
 
-    private OrderPortAssembler orderPortAssembler = new OrderPortAssembler();
+    private final OrderPortAssembler orderPortAssembler = new OrderPortAssembler();
 
     @GetMapping
     @Override

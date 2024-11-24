@@ -20,8 +20,7 @@ public class OrderService implements OrderServicePort {
     @Autowired
     private OrderRepository orderRepository;
 
-    @Autowired
-    private OrderPortAssembler orderPortAssembler;
+    private final OrderPortAssembler orderPortAssembler = new OrderPortAssembler();
 
     @Transactional
     @Override

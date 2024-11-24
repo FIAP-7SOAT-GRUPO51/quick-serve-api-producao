@@ -7,10 +7,10 @@ import org.springframework.data.domain.Pageable;
 
 import java.util.Optional;
 
-public interface OrderRepositoryPort {
+public interface OrderRepositoryPort  {
 
     Optional<OrderPort> findByOrderId(Long orderId);
     Page<OrderPortModel> findAll(Pageable pageable);
     OrderPort save(OrderPort orderPort);
-
+    Long count();
 }

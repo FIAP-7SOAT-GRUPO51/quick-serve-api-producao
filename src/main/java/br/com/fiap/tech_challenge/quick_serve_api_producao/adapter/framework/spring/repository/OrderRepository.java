@@ -21,8 +21,7 @@ public class OrderRepository implements OrderRepositoryPort {
     @Autowired
     private OrderRepositoryInterface orderRepositoryInterface;
 
-    @Autowired
-    OrderPortAssembler orderPortAssembler;
+    private final OrderPortAssembler orderPortAssembler = new OrderPortAssembler();
 
     @Override
     public Optional<OrderPort> findByOrderId(Long id) {
@@ -55,5 +54,10 @@ public class OrderRepository implements OrderRepositoryPort {
                 .build());
 
         return orderPortSaved;
+    }
+
+    @Override
+    public Long count() {
+        return orderRepositoryInterface.count();
     }
 }
