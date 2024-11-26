@@ -1,6 +1,6 @@
 package br.com.fiap.tech_challenge.quick_serve_api_producao.domain.api.assembler;
 
-import br.com.fiap.tech_challenge.quick_serve_api_producao.domain.api.model.OrderPortModel;
+import br.com.fiap.tech_challenge.quick_serve_api_producao.domain.api.model.OrderModel;
 import br.com.fiap.tech_challenge.quick_serve_api_producao.domain.core.ModelMapperConfig;
 import br.com.fiap.tech_challenge.quick_serve_api_producao.domain.model.port.OrderPort;
 import org.modelmapper.ModelMapper;
@@ -14,11 +14,11 @@ public class OrderPortAssembler {
     private final ModelMapperConfig modelMapperConfig = new ModelMapperConfig();
     private final ModelMapper modelMapper = modelMapperConfig.modelMapper();
 
-    public OrderPortModel toModel(OrderPort orderPort) {
-        return modelMapper.map(orderPort, OrderPortModel.class);
+    public OrderModel toModel(OrderPort orderPort) {
+        return modelMapper.map(orderPort, OrderModel.class);
     }
 
-    public List<OrderPortModel> toCollectionModel(Collection<OrderPort> orderPorts) {
+    public List<OrderModel> toCollectionModel(Collection<OrderPort> orderPorts) {
         return orderPorts.stream().map(this::toModel).collect(Collectors.toList());
     }
 

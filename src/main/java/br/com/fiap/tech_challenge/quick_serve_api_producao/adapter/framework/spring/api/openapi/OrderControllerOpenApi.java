@@ -3,7 +3,7 @@ package br.com.fiap.tech_challenge.quick_serve_api_producao.adapter.framework.sp
 import br.com.fiap.tech_challenge.quick_serve_api_producao.adapter.framework.spring.api.model.input.OrderInput;
 import br.com.fiap.tech_challenge.quick_serve_api_producao.adapter.framework.spring.api.openapi.model.PageableParameter;
 import br.com.fiap.tech_challenge.quick_serve_api_producao.domain.api.controller.ControllerPort;
-import br.com.fiap.tech_challenge.quick_serve_api_producao.domain.api.model.OrderPortModel;
+import br.com.fiap.tech_challenge.quick_serve_api_producao.domain.api.model.OrderModel;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
@@ -16,17 +16,17 @@ public interface OrderControllerOpenApi extends ControllerPort {
 
     @Operation(summary = "Lista pedidos")
     @PageableParameter
-    Page<OrderPortModel> list(@Parameter(hidden = true) Pageable pageable);
+    Page<OrderModel> list(@Parameter(hidden = true) Pageable pageable);
 
     @Override
     @Operation(summary = "Encontra pedido por ID")
-    OrderPortModel findByOrderId(
+    OrderModel findByOrderId(
             @Parameter(description = "ID do pedido", required = true)
             Long orderId);
 
     @Override
     @Operation(summary = "Inclui pedido")
-    OrderPortModel add(
+    OrderModel add(
             @RequestBody(description = "Informações para inclusão de Clientes", required = true)
             OrderInput orderInput);
 

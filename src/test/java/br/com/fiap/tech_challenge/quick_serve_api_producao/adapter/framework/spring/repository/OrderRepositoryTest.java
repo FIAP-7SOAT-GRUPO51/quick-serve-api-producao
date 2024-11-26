@@ -1,10 +1,8 @@
-package br.com.fiap.tech_challenge.quick_serve_api_producao.adapter.framework.srping.repository;
+package br.com.fiap.tech_challenge.quick_serve_api_producao.adapter.framework.spring.repository;
 
-import br.com.fiap.tech_challenge.quick_serve_api_producao.adapter.framework.spring.api.model.OrderModel;
 import br.com.fiap.tech_challenge.quick_serve_api_producao.adapter.framework.spring.model.Order;
-import br.com.fiap.tech_challenge.quick_serve_api_producao.adapter.framework.spring.repository.OrderRepository;
 import br.com.fiap.tech_challenge.quick_serve_api_producao.domain.api.assembler.OrderPortAssembler;
-import br.com.fiap.tech_challenge.quick_serve_api_producao.domain.api.model.OrderPortModel;
+import br.com.fiap.tech_challenge.quick_serve_api_producao.domain.api.model.OrderModel;
 import br.com.fiap.tech_challenge.quick_serve_api_producao.domain.model.OrderStatus;
 import br.com.fiap.tech_challenge.quick_serve_api_producao.domain.model.port.OrderPort;
 import org.junit.jupiter.api.AfterEach;
@@ -24,8 +22,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @TestPropertySource("/application-development.yml")
@@ -50,7 +47,7 @@ public class OrderRepositoryTest {
     }
 
     @Test
-    void devePermitirRegistrarPedidoAutomaticamenteComStatusRecebido_QuandoForUmPedidoQueNaoExiste() {
+    void testSave() {
 
         // Arrange
         var order = Order.builder()
@@ -74,7 +71,7 @@ public class OrderRepositoryTest {
     }
 
     @Test
-    void devePermitirBuscarPedidoPeloNumero() {
+    void testFindByOrderId_WhenOrderExists() {
 
         // Arrange
 
@@ -98,34 +95,49 @@ public class OrderRepositoryTest {
     }
 
     @Test
-    void devePermitirListarPedidos() {
+    void testFindByOrderId_WhenOrderNotExists() {
+        // Arrange
+        Long orderId = 1L;
+        when(orderRepository.findByOrderId(orderId))
+                .thenReturn(Optional.empty());
+
+        // Act
+        Optional<OrderPort> result = orderRepository.findByOrderId(orderId);
+
+        // Assert
+        assertTrue(result.isEmpty());
+        verify(orderRepository).findByOrderId(orderId);
+    }
+
+    @Test
+    void testFindAll() {
 
         // Arrange
         Pageable pageable = PageRequest.of(0, 10);
 
-        OrderPortModel orderPortModel1 = new OrderModel();
-        orderPortModel1.setOrderId(1L);
-        orderPortModel1.setStatus(OrderStatus.RECEBIDO);
+        OrderModel orderModel1 = new OrderModel();
+        orderModel1.setOrderId(1L);
+        orderModel1.setStatus(OrderStatus.RECEBIDO);
 
-        OrderPortModel orderPortModel2 = new OrderModel();
-        orderPortModel2.setOrderId(2L);
-        orderPortModel2.setStatus(OrderStatus.RECEBIDO);
+        OrderModel orderModel2 = new OrderModel();
+        orderModel2.setOrderId(2L);
+        orderModel2.setStatus(OrderStatus.RECEBIDO);
 
-        List<OrderPortModel> expectedOrderPortModels = Arrays.asList(
-                orderPortModel1,
-                orderPortModel2
+        List<OrderModel> expectedOrderModels = Arrays.asList(
+                orderModel1,
+                orderModel2
         );
-        Page<OrderPortModel> orderPageModel = new PageImpl<>(expectedOrderPortModels, pageable, expectedOrderPortModels.size());
+        Page<OrderModel> orderPageModel = new PageImpl<>(expectedOrderModels, pageable, expectedOrderModels.size());
 
 
         // Mock repository call
         when(orderRepository.findAll(pageable)).thenReturn(orderPageModel);
 
         // Mock assembler conversion
-        when(orderPortAssembler.toCollectionModel(anyList())).thenReturn(expectedOrderPortModels);
+        when(orderPortAssembler.toCollectionModel(anyList())).thenReturn(expectedOrderModels);
 
         // Act
-        Page<OrderPortModel> result = orderRepository.findAll(pageable);
+        Page<OrderModel> result = orderRepository.findAll(pageable);
 
         // Assert
         assertNotNull(result);
@@ -136,6 +148,19 @@ public class OrderRepositoryTest {
 
         verify(orderRepository, times(1)).findAll(pageable);
 
+    }
+
+    @Test
+    void testCount() {
+        // Arrange
+        when(orderRepository.count()).thenReturn(10L);
+
+        // Act
+        Long count = orderRepository.count();
+
+        // Assert
+        assertEquals(10L, count);
+        verify(orderRepository).count();
     }
 
     private static Order generateOrder() {

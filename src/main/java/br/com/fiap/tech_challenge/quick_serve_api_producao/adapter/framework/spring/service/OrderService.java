@@ -2,7 +2,7 @@ package br.com.fiap.tech_challenge.quick_serve_api_producao.adapter.framework.sp
 
 import br.com.fiap.tech_challenge.quick_serve_api_producao.adapter.framework.spring.repository.OrderRepository;
 import br.com.fiap.tech_challenge.quick_serve_api_producao.domain.api.assembler.OrderPortAssembler;
-import br.com.fiap.tech_challenge.quick_serve_api_producao.domain.api.model.OrderPortModel;
+import br.com.fiap.tech_challenge.quick_serve_api_producao.domain.api.model.OrderModel;
 import br.com.fiap.tech_challenge.quick_serve_api_producao.domain.exception.EntityInUseException;
 import br.com.fiap.tech_challenge.quick_serve_api_producao.domain.exception.OrderNotFoundException;
 import br.com.fiap.tech_challenge.quick_serve_api_producao.domain.model.port.OrderPort;
@@ -34,8 +34,8 @@ public class OrderService implements OrderServicePort {
 
     }
 
-    public Page<OrderPortModel> listAllOrders(Pageable pageable) {
-        Page<OrderPortModel> orderPortModelPage = orderRepository.findAll(pageable);
+    public Page<OrderModel> listAllOrders(Pageable pageable) {
+        Page<OrderModel> orderPortModelPage = orderRepository.findAll(pageable);
         return orderPortModelPage;
     }
 

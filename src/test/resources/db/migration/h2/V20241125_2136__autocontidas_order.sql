@@ -1,0 +1,1 @@
+INSERT INTO order_app (order_id, status) VALUES (1L, 'RECEBIDO'),(2L, 'RECEBIDO');

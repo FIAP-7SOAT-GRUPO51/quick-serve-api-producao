@@ -32,6 +32,7 @@
 		<modelmapper.version>3.0.0</modelmapper.version>
 		<assertj.version>3.26.3</assertj.version>
 		<h2.version>2.2.224</h2.version>
+		<cucumber.version>7.20.1</cucumber.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -104,7 +105,12 @@
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
 			<version>${h2.version}</version>
-			<scope>runtime</scope>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>io.cucumber</groupId>
+			<artifactId>cucumber-java</artifactId>
+			<version>${cucumber.version}</version>
 		</dependency>
 	</dependencies>
 

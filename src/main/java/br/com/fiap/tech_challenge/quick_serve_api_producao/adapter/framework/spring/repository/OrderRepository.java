@@ -2,9 +2,9 @@ package br.com.fiap.tech_challenge.quick_serve_api_producao.adapter.framework.sp
 
 import br.com.fiap.tech_challenge.quick_serve_api_producao.adapter.framework.spring.model.Order;
 import br.com.fiap.tech_challenge.quick_serve_api_producao.domain.api.assembler.OrderPortAssembler;
-import br.com.fiap.tech_challenge.quick_serve_api_producao.domain.api.model.OrderPortModel;
+import br.com.fiap.tech_challenge.quick_serve_api_producao.domain.api.model.OrderModel;
 import br.com.fiap.tech_challenge.quick_serve_api_producao.domain.model.port.OrderPort;
-import br.com.fiap.tech_challenge.quick_serve_api_producao.adapter.framework.srping.repository.OrderRepositoryPort;
+import br.com.fiap.tech_challenge.quick_serve_api_producao.domain.repository.OrderRepositoryPort;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -36,12 +36,12 @@ public class OrderRepository implements OrderRepositoryPort {
     }
 
     @Override
-    public Page<OrderPortModel> findAll(Pageable pageable) {
+    public Page<OrderModel> findAll(Pageable pageable) {
         Page<Order> orderSpringJpaAdapters = orderRepositoryInterface.findAll(pageable);
         List<OrderPort> orderPortList = new ArrayList<>();
         orderPortList.addAll(orderSpringJpaAdapters.getContent());
-        List<OrderPortModel> orderPortModelList = orderPortAssembler.toCollectionModel(orderPortList);
-        Page<OrderPortModel> orderPortModelPage = new PageImpl<>(orderPortModelList, pageable,orderSpringJpaAdapters.getTotalElements());
+        List<OrderModel> orderModelList = orderPortAssembler.toCollectionModel(orderPortList);
+        Page<OrderModel> orderPortModelPage = new PageImpl<>(orderModelList, pageable,orderSpringJpaAdapters.getTotalElements());
         return orderPortModelPage;
     }
 

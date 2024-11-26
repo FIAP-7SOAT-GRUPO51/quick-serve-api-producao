@@ -5,7 +5,7 @@ import br.com.fiap.tech_challenge.quick_serve_api_producao.adapter.framework.spr
 import br.com.fiap.tech_challenge.quick_serve_api_producao.adapter.framework.spring.service.OrderService;
 import br.com.fiap.tech_challenge.quick_serve_api_producao.domain.api.assembler.OrderPortAssembler;
 import br.com.fiap.tech_challenge.quick_serve_api_producao.domain.api.assembler.OrderPortInputDisassembler;
-import br.com.fiap.tech_challenge.quick_serve_api_producao.domain.api.model.OrderPortModel;
+import br.com.fiap.tech_challenge.quick_serve_api_producao.domain.api.model.OrderModel;
 import br.com.fiap.tech_challenge.quick_serve_api_producao.domain.model.OrderStatus;
 import br.com.fiap.tech_challenge.quick_serve_api_producao.domain.model.port.OrderPort;
 import jakarta.validation.Valid;
@@ -29,12 +29,12 @@ public class OrderController implements OrderControllerOpenApi {
 
     @GetMapping
     @Override
-    public Page<OrderPortModel> list(Pageable pageable) {
+    public Page<OrderModel> list(Pageable pageable) {
         return orderService.listAllOrders(pageable);
     }
 
     @Override
-    public OrderPortModel findByOrderId(Long orderId) {
+    public OrderModel findByOrderId(Long orderId) {
         return null;
     }
 
@@ -43,7 +43,7 @@ public class OrderController implements OrderControllerOpenApi {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @Override
-    public OrderPortModel add(@RequestBody @Valid OrderInput orderInput) {
+    public OrderModel add(@RequestBody @Valid OrderInput orderInput) {
         OrderPort orderPort = orderSpringJpaAdapterInputDisassembler.toDomainObject(orderInput);
         orderPort.setId(UUID.randomUUID());
         orderPort.setStatus(OrderStatus.RECEBIDO);
