@@ -26,7 +26,7 @@ public class OrderRepository implements OrderRepositoryPort {
     @Override
     public Optional<OrderPort> findByOrderId(Long id) {
         Optional<Order> optionalOrderSpringJpaAdapter = orderRepositoryInterface.findByOrderId(id);
-        Optional<OrderPort> orderPort = null;
+        Optional<OrderPort> orderPort = Optional.empty();
 
         if ( optionalOrderSpringJpaAdapter.isPresent() ) {
             orderPort = Optional.of(optionalOrderSpringJpaAdapter.get());
