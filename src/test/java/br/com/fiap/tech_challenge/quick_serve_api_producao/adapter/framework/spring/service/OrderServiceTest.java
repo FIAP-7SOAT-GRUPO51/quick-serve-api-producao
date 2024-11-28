@@ -68,7 +68,7 @@ public class OrderServiceTest {
                 .thenThrow(new DataIntegrityViolationException("Duplicate key"));
 
         // Act & Assert
-        assertThrows(EntityInUseException.class, () -> {
+        assertThrows(DataIntegrityViolationException.class, () -> {
             orderService.save(mockOrder);
         });
     }

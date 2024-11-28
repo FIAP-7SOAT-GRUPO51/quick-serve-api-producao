@@ -15,8 +15,4 @@ public class OrderPortInputDisassembler {
         return modelMapper.map(orderPortInput, Order.class);
     }
 
-    public void copyToDomainObject(OrderPortInput orderPortInput, OrderPort orderPort) {
-        modelMapper.map(orderPortInput, orderPort);
-    }
-
 }

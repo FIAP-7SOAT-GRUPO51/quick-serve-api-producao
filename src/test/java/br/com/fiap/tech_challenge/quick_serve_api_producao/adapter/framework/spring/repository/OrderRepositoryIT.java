@@ -65,14 +65,14 @@ public class OrderRepositoryIT {
         // Arrange
 
         // Act
-        var orderSearch = orderRepository.findByOrderId(1L);
+        var orderSearch = orderRepository.findByOrderId(2L);
 
         // Assert
         assertThat(orderSearch)
                 .isPresent();
 
         orderSearch.ifPresent( orderPort -> {
-            assertThat(orderPort.getId()).isEqualTo(1L);
+            assertThat(orderPort.getOrderId()).isEqualTo(2L);
         });
 
     }

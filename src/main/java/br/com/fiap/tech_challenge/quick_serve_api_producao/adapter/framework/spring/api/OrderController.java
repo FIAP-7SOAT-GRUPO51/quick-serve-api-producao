@@ -38,7 +38,7 @@ public class OrderController implements OrderControllerOpenApi {
         return null;
     }
 
-    private OrderPortInputDisassembler orderSpringJpaAdapterInputDisassembler;
+    private final OrderPortInputDisassembler orderSpringJpaAdapterInputDisassembler = new OrderPortInputDisassembler();
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
