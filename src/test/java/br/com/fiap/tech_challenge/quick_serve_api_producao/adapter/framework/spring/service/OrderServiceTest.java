@@ -2,7 +2,6 @@ package br.com.fiap.tech_challenge.quick_serve_api_producao.adapter.framework.sp
 
 import br.com.fiap.tech_challenge.quick_serve_api_producao.adapter.framework.spring.repository.OrderRepository;
 import br.com.fiap.tech_challenge.quick_serve_api_producao.domain.api.model.OrderModel;
-import br.com.fiap.tech_challenge.quick_serve_api_producao.domain.exception.EntityInUseException;
 import br.com.fiap.tech_challenge.quick_serve_api_producao.domain.exception.OrderNotFoundException;
 import br.com.fiap.tech_challenge.quick_serve_api_producao.domain.model.port.OrderPort;
 import org.junit.jupiter.api.AfterEach;
