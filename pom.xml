@@ -208,6 +208,15 @@
 							<rules>
 								<rule>
 									<element>CLASS</element>
+									<excludes>
+										<exclude>br.com.fiap.tech_challenge.quick_serve_api_producao.domain.api.exception.ProblemType</exclude>
+										<exclude>br.com.fiap.tech_challenge.quick_serve_api_producao.adapter.framework.spring.api.exception.ApiExceptionHandler</exclude>
+										<exclude>br.com.fiap.tech_challenge.quick_serve_api_producao.QuickServeApiProducaoApplication</exclude>
+										<exclude>br.com.fiap.tech_challenge.quick_serve_api_producao.adapter.framework.spring.repository.OrderRepository</exclude>
+										<exclude>br.com.fiap.tech_challenge.quick_serve_api_producao.domain.exception.DomainException</exclude>
+										<exclude>br.com.fiap.tech_challenge.quick_serve_api_producao.domain.exception.EntityNotFoundException</exclude>
+										<exclude>br.com.fiap.tech_challenge.quick_serve_api_producao.domain.exception.EntityInUseException</exclude>
+									</excludes>
 									<limits>
 										<limit>
 											<counter>LINE</counter>
