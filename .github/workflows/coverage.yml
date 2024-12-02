@@ -1,13 +1,12 @@
-name: Java CI with Coverage
+name: CI/CD with Auto PR
 
 on:
   push:
     branches:
-      - feature/*
-  pull_request:
+      - feature/* # Roda para branches específicas com prefixo "feature/"
 
 jobs:
-  build-and-test:
+  build-test-pr:
     runs-on: ubuntu-latest
 
     steps:
@@ -22,7 +21,7 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      # 3. Instalar dependências
+      # 3. Cache do repositório Maven
       - name: Cache Maven repository
         uses: actions/cache@v3
         with:
@@ -31,10 +30,17 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven
 
-      # 4. Executar testes com cobertura
+      # 4. Executar testes e gerar cobertura
       - name: Build and test
         run: mvn clean verify
 
-      # 5. Gerar relatório JaCoCo (apenas local)
-      - name: Generate JaCoCo Report
-        run: mvn jacoco:report
+      # 5. Criar automaticamente o Pull Request
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref_name }} # Branch atual onde o commit foi feito
+          title: "Merge changes from ${{ github.ref_name }}"
+          body: "This PR was automatically created by CI/CD workflow."
+          base: main # Branch de destino do PR
+          delete-branch: false
