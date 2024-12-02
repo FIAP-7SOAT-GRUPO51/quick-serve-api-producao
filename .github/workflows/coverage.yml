@@ -3,11 +3,14 @@ name: CI/CD with Auto PR
 on:
   push:
     branches:
-      - feature/* # Roda para branches específicas com prefixo "feature/"
+      - feature/*  # Roda para branches específicas com prefixo "feature/"
 
 jobs:
   build-test-pr:
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
 
     steps:
       # 1. Checkout do código
@@ -39,8 +42,8 @@ jobs:
         uses: peter-evans/create-pull-request@v5
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ github.ref_name }} # Branch atual onde o commit foi feito
+          branch: ${{ github.ref_name }}
           title: "Merge changes from ${{ github.ref_name }}"
           body: "This PR was automatically created by CI/CD workflow."
-          base: main # Branch de destino do PR
+          base: main
           delete-branch: false
