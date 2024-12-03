@@ -9,7 +9,6 @@ resource "aws_ecr_repository" "ecr_repo" {
     ignore_changes = [image_tag_mutability]
   }
 }
-
 # Definição da Task no ECS
 resource "aws_ecs_task_definition" "app_task" {
   family                   = "quick-serve-api-producao"
@@ -17,8 +16,8 @@ resource "aws_ecs_task_definition" "app_task" {
   task_role_arn            = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/ecsTaskExecutionRole"
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
-  cpu                      = "256"
-  memory                   = "512"
+  cpu                      = "512" # Aumentei o valor da task para suportar os contêineres
+  memory                   = "1024"
 
   container_definitions = jsonencode([
     {
@@ -50,8 +49,8 @@ resource "aws_ecs_task_definition" "app_task" {
     {
       name      = "mongo-express"
       image     = "mongo-express"
-      cpu       = 128
-      memory    = 256
+      cpu       = 64 
+      memory    = 128
       essential = true
       portMappings = [
         {
