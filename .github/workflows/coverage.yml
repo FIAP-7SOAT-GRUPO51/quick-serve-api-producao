@@ -1,0 +1,49 @@
+name: CI/CD with Auto PR
+
+on:
+  push:
+    branches:
+      - feature/*  # Roda para branches específicas com prefixo "feature/"
+
+jobs:
+  build-test-pr:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      # 1. Checkout do código
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # 2. Configuração do JDK
+      - name: Setup JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      # 3. Cache do repositório Maven
+      - name: Cache Maven repository
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven
+
+      # 4. Executar testes e gerar cobertura
+      - name: Build and test
+        run: mvn clean verify
+
+      # 5. Criar automaticamente o Pull Request
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref_name }}
+          title: "Merge changes from ${{ github.ref_name }}"
+          body: "This PR was automatically created by CI/CD workflow."
+          base: main
+          delete-branch: false
