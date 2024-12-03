@@ -1,4 +1,4 @@
-name: Deploy to AWS ECS
+name: Terraform
 
 on:
   push:
@@ -6,37 +6,60 @@ on:
       - main
 
 jobs:
-  deploy:
+  tests:
     runs-on: ubuntu-latest
-
     steps:
-      # 1. Fazer checkout do código
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # 2. Configurar credenciais AWS
-      - name: Configure AWS Credentials
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin' # Specify the distribution here
+          java-version: '17'
+
+      - name: Cache Maven packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      - name: Install dependencies
+        run: mvn install -DskipTests
+
+      - name: Run tests and generate coverage report
+        run: mvn test jacoco:report
+
+      - name: Print coverage report
+        run: |
+          echo "JaCoCo Test Coverage Report:"
+          cat target/site/jacoco/jacoco.csv
+
+  terraform:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: "Configure AWS Credentials"
         uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-region: us-east-1
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
-      # 3. Logar no Amazon ECR
-      - name: Log in to Amazon ECR
-        uses: aws-actions/amazon-ecr-login@v1
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-      # 4. Construir e enviar a imagem Docker
-      - name: Build, tag, and push Docker image
-        run: |
-          docker build -t docker-compose .
-          docker tag quick-serve-api-producao:latest ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com/quick-serve-api-producao:latest
-          docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com/quick-serve-api-producao:latest
+      - name: Terraform Init
+        run: terraform init
+        working-directory: ./infra
 
-      # 5. Atualizar serviço ECS
-      - name: Deploy to ECS
-        run: |
-          aws ecs update-service \
-            --cluster prod \
-            --service api-producao \
-            --force-new-deployment
+      - name: Terraform Plan
+        run: terraform plan
+        working-directory: ./infra
+
+      - name: Terraform Apply
+        if: github.ref == 'refs/heads/main'
+        run: terraform apply
+        working-directory: ./infra
