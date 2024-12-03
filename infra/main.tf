@@ -11,6 +11,19 @@ resource "aws_ecr_repository" "ecr_repo" {
 }
 
 # Definição da Task no ECS
+# Obtendo a identidade da conta atual
+data "aws_caller_identity" "current" {}
+
+# Declarando o repositório ECR
+resource "aws_ecr_repository" "ecr_repo" {
+  name                 = "quick-serve-api-producao"
+  image_tag_mutability = "MUTABLE"
+  lifecycle {
+    ignore_changes = [image_tag_mutability]
+  }
+}
+
+# Definição da Task no ECS
 resource "aws_ecs_task_definition" "app_task" {
   family                   = "quick-serve-api-producao"
   execution_role_arn       = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/ecsTaskExecutionRole"
