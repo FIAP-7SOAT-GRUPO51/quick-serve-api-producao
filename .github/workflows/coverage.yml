@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - feature/*  # Roda para branches específicas com prefixo "feature/"
+      - main
 
 jobs:
   build-test-pr:
