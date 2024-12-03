@@ -57,3 +57,8 @@ resource "aws_ecs_task_definition" "app_task" {
         {
           containerPort = 8081
           hostPort      = 8081
+        }
+      ]
+    }
+  ])
+}
