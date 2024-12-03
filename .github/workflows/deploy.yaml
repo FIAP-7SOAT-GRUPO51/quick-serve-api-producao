@@ -30,8 +30,8 @@ jobs:
       - name: Build, tag, and push Docker image
         run: |
           docker build -t my-app .
-          docker tag my-app:latest ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com/my-app:latest
-          docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com/my-app:latest
+          docker tag my-app:latest ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com/quick-serve-api-producao:latest
+          docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com/quick-serve-api-producao:latest
 
       # 5. Atualizar serviço ECS
       - name: Deploy to ECS
