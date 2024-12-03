@@ -53,13 +53,12 @@ jobs:
 
       - name: Terraform Init
         run: terraform init
-        working-directory: ./infra
+        working-directory: ./docker-compose/postgres
 
       - name: Terraform Plan
         run: terraform plan
-        working-directory: ./infra
-
+        working-directory: ./docker-compose/postgres
       - name: Terraform Apply
         if: github.ref == 'refs/heads/main'
         run: terraform apply
-        working-directory: ./infra
+        working-directory: ./docker-compose/postgres
